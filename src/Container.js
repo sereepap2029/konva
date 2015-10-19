@@ -135,7 +135,7 @@
             });
 
             // if node under drag we need to update drag animation
-            if (child.isDragging()) {
+            if (Konva.DD && child.isDragging()) {
                 Konva.DD.anim.setLayers(child.getLayer());
             }
 
@@ -345,7 +345,7 @@
                     context.restore();
                 }
                 else {
-                    this._drawChildren(canvas, 'drawScene', top);
+                    this._drawChildren(canvas, 'drawScene', top, false, caching);
                 }
             }
             return this;
@@ -373,7 +373,7 @@
             }
             return this;
         },
-        _drawChildren: function(canvas, drawMethod, top) {
+        _drawChildren: function(canvas, drawMethod, top, caching, skipBuffer) {
             var layer = this.getLayer(),
                 context = canvas && canvas.getContext(),
                 clipWidth = this.getClipWidth(),
@@ -394,7 +394,7 @@
             }
 
             this.children.each(function(child) {
-                child[drawMethod](canvas, top);
+                child[drawMethod](canvas, top, caching, skipBuffer);
             });
 
             if (hasClip) {
